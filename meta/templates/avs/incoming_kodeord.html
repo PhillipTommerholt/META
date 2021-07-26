@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}META - Modtagelse - Kodeord{% endblock %}
+
+{% block content %}
+
+<section class="section center">
+  <div class="row">
+    <div class="col l8 offset-l2">
+      <div class="card">
+        <div class="card-content">
+          <form action="{% url 'incoming_procedure_save' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="previous_status" value="Kvittering">
+            <input type="hidden" name="next_status" value="Journalisering">
+            <input type="hidden" name="avid" value="{{ form.avid }}">
+            <input type="hidden" name="version" value="{{ form.version }}">
+
+            <div class="row">
+              <span class="card-title grey-text darken-2-text" style="font-weight: bold;">Modtagelse af AVID.{{ av.avid }} (v{{ av.version }})&nbsp;&nbsp;—&nbsp;&nbsp;{{ form.status }}</span>
+            </div>
+
+            <div class="row">
+              <div class="col l12 left-align">
+                <ul class="collection">
+                  <li class="collection-item">
+                    <label for="m_find_kodeord">
+                      <input type="hidden" name="h_find_kodeord" />
+                      {% if form.find_kodeord == True %}
+                      <input type="checkbox" name="m_find_kodeord" id="m_find_kodeord" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_find_kodeord" id="m_find_kodeord" />
+                      {% endif %}
+                      <span class="grey-text">find e-post med kodeord i "Enhedspostkassen" i Outlook</span>
+                    </label>
+                  </li>
+                  <li class="collection-item" style="margin-left: 40px;">
+                    <label for="t_find_kodeord">
+                      <span class="black-text" style="font-size: medium;"><i>kan e-post med kodeord ikke findes, så fremsend forespørgsel fra Public 360</i></span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_manglende_kodeord">
+                      <input type="hidden" name="h_manglende_kodeord" />
+                      {% if form.manglende_kodeord == True %}
+                      <input type="checkbox" name="m_manglende_kodeord" id="m_manglende_kodeord" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_manglende_kodeord" id="m_manglende_kodeord" />
+                      {% endif %}
+                      <span class="grey-text">journalisér evt. e-post om manglende kodeord i Public 360</span>
+                    </label>
+                  </li>
+                  <li class="collection-item" style="margin-left: 40px;">
+                    <label for="t_manglende_kodeord">
+                      <span class="black-text" style="font-size: medium;"><i>journalisér evt. e-post om manglende kodeord som "Udgående dokument" med titlen "xxxxx, manglende kodeord"</i></span>
+                    </label>
+                  </li>
+                  <li class="collection-item" style="margin-left: 40px;">
+                    <label for="t_respons_kodeord">
+                      <span class="black-text" style="font-size: medium;"><i>afvent respons på forespørgsel om manglede kodeord</i></span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class=" input-field col l2">
+                <div class="form-group">
+                  <label for="kodeord" class="col-form-label left grey-text darken-2-text">Adgang</label>
+                  <input type="hidden" name="h_i_kodeord">
+                  <input type="text" class="datepicker" name="kodeord" id="kodeord">
+                  <input type="hidden" id="kodeord_dato" value="{{ av.kodeord|date:'m.d.Y' }}">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col l12 left-align">
+                <ul class="collection">
+                  <li class="collection-item">
+                    <label for="m_kodeord">
+                      <input type="hidden" name="h_kodeord" />
+                      {% if form.kodeord == True %}
+                      <input type="checkbox" name="m_kodeord" id="m_kodeord" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_kodeord" id="m_kodeord" />
+                      {% endif %}
+                      <span class="grey-text">udfyld feltet 'Adgang' med datoen hvor kodeordet blev modtaget, dog tidligst datoen for 'Modtaget'</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_journaliser_kodeord">
+                      <input type="hidden" name="h_journaliser_kodeord" />
+                      {% if form.journaliser_kodeord == True %}
+                      <input type="checkbox" name="m_journaliser_kodeord" id="m_journaliser_kodeord" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_journaliser_kodeord" id="m_journaliser_kodeord" />
+                      {% endif %}
+                      <span class="grey-text">journalisér e-post med kodeord i Public 360</span>
+                    </label>
+                  </li>
+                  <li class="collection-item" style="margin-left: 40px;">
+                    <label for="t_journaliser_kodeord">
+                      <span class="black-text" style="font-size: medium;"><i>journalisér e-post med kodeord som "Indgående dokument" med titlen "xxxxx, kodeord"</i></span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="card-action col l12">
+                <div class="col right" style="padding-top: 20px;">
+                  <button class="btn waves-effect waves-light l4 grey darken-2 white-text" type="submit" id="gem" name="gem">Gem</button>
+                </div>
+                <div class="col left" style="padding-top: 20px;">
+                  <button class="btn waves-effect waves-light l4 grey" type="submit" id="previous" name="previous">Forrige</button>
+                </div>
+                <div class="col left" style="padding-top: 20px;">
+                  <button class="btn waves-effect waves-light l4 grey" data-position="top" type="submit" id="next" name="next">Næste</button>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

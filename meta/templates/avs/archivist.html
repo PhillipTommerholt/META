@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}META - Arkivar{% endblock %}
+
+{% block content %}
+
+<section class="section center">
+  <div class=" row">
+    <div class="col l4 offset-l4">
+      <div class="card">
+        <div class="card-content">
+          <form action="{% url 'archivist_save' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+              <div class="input-field col l12">
+                <div class="form-group">
+                  <label for="arkivar" class="col-form-label left grey-text text-darken-2">Arkivar</label>
+                  <input type="text" name="arkivar" id="arkivar" class="form-control" value="{{ arkivar.navn }}" spellcheck="false" autofocus>
+                  <input type="hidden" name="pk" id="pk" value="{{ arkivar.pk }}">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="card-action col l12">
+                <div class="col right" style="padding-top: 20px;">
+                  <button class="btn waves-effect waves-light l4 grey white-text" type="submit" id="gem" name="action">Gem</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+{% endblock content %}

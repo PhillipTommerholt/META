@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+
+{% block title %}META - Modtagelse - Oprettelse{% endblock %}
+
+{% block content %}
+
+<section class="section center">
+  <div class="row">
+    <div class="col l8 offset-l2">
+      <div class="card">
+        <div class="card-content">
+          <form action="{% url 'incoming_procedure_save' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="next_status" value="Kvittering">
+
+            <div class="row">
+              <span class="card-title grey-text darken-2-text" style="font-weight: bold;">Modtagelse af AVID.{{ av.avid }} (v{{ av.version }})&nbsp;&nbsp;—&nbsp;&nbsp;{{ form.status }}</span>
+            </div>
+
+            <div class="row">
+              <div class="col l12 left-align">
+                <ul class="collection">
+                  <li class="collection-item">
+                    <label for="m_find_epost">
+                      <input type="hidden" name="h_find_epost" />
+                      {% if form.find_epost == True %}
+                      <input type="checkbox" name="m_find_epost" id="m_find_epost" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_find_epost" id="m_find_epost" />
+                      {% endif %}
+                      <span class="grey-text">find e-post med følgeseddel i "Enhedspostkassen" i Outlook</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_epost_emne">
+                      <input type="hidden" name="h_epost_emne" />
+                      {% if form.epost_emne == True %}
+                      <input type="checkbox" name="m_epost_emne" id="m_epost_emne" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_epost_emne" id="m_epost_emne" />
+                      {% endif %}
+                      <span class="grey-text">omdøb "Emne" for e-post med følgeseddel til "AVID.XXXXX"</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_flyt_epost">
+                      <input type="hidden" name="h_flyt_epost" />
+                      {% if form.flyt_epost == True %}
+                      <input type="checkbox" name="m_flyt_epost" id="m_flyt_epost" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_flyt_epost" id="m_flyt_epost" />
+                      {% endif %}
+                      <span class="grey-text">træk e-post med følgeseddel til mappen "Modtaget" i "Enhedspostkassen" i Outlook</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {% if av.version == 1 %}
+            <div class="row">
+              <div class="input-field col l1">
+                <div class="form-group">
+                  <label for="avid" class="col-form-label left grey-text darken-2-text">AVID</label>
+                  <input type="text" name="avid" id="avid" class="form-control" value="{{ av.avid }}" readonly>
+                  <input type="hidden" name="version" value="{{ av.version }}">
+                </div>
+              </div>
+              <div class="input-field col l2">
+                <div class="form-group">
+                  <label for="jnr" class="col-form-label left grey-text darken-2-text">J.nr.</label>
+                  <input type="hidden" name="h_i_jnr">
+                  {% if av.version == 1 %}
+                  <input type="text" name="jnr" id="jnr" class="form-control" value="{{ av.jnr }}">
+                  {% else %}
+                  <input type="text" name="jnr" id="jnr" class="form-control" value="{{ av.jnr }}" readonly>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="input-field col l9">
+                <div class="form-group">
+                  <label for="titel" class="col-form-label left grey-text darken-2-text">Titel</label>
+                  <input type="hidden" name="h_i_titel">
+                  {% if av.version == 1 %}
+                  <input type="text" name="titel" id="titel" class="form-control" value="{{ av.titel }}">
+                  {% else %}
+                  <input type="text" name="titel" id="titel" class="form-control" value="{{ av.titel }}" readonly>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% else %}
+            <input type="hidden" name="avid" value="{{ av.avid }}">
+            <input type="hidden" name="version" value="{{ av.version }}">
+            {% endif %}
+
+
+            {% if av.version == 1 %}
+            <div class="row">
+              <div class="col l12 left-align">
+                <ul class="collection">
+                  <li class="collection-item">
+                    <label for="m_public">
+                      <input type="hidden" name="h_public" />
+                      {% if form.public == True %}
+                      <input type="checkbox" name="m_public" id="m_public" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_public" id="m_public" />
+                      {% endif %}
+                      <span class="grey-text">find sagen i Public 360</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_journalnummer">
+                      <input type="hidden" name="h_journalnummer" />
+                      {% if form.journalnummer == True %}
+                      <input type="checkbox" name="m_journalnummer" id="m_journalnummer" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_journalnummer" id="m_journalnummer" />
+                      {% endif %}
+                      <span class="grey-text">udfyld feltet 'J.nr.'</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_titel">
+                      <input type="hidden" name="h_titel" />
+                      {% if form.titel == True %}
+                      <input type="checkbox" name="m_titel" id="m_titel" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_titel" id="m_titel" />
+                      {% endif %}
+                      <span class="grey-text">udfyld feltet 'Titel'</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if av.version == 1 %}
+            <div class="row">
+              <div class="input-field col l4">
+                <div class="form-group">
+                  <label for="arkivar" class=" col-form-label left grey-text darken-2-text">Arkivar</label>
+                  <select name="arkivar" id="arkivar">
+                    {% if av.arkivar == None %}
+                    <option value="None" selected></option>
+                    {% else%}
+                    <option value="None"></option>
+                    {% endif %}
+                    {% for arkivar in arkivarer %}
+                    {% if arkivar == av.arkivar %}
+                    <option value="{{ av.arkivar }}" selected>{{ av.arkivar }}</option>
+                    {% else %}
+                    <option value="{{ arkivar }}">{{ arkivar }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if av.version == 1 %}
+            <div class="row">
+              <div class="col l12 left-align">
+                <ul class="collection">
+                  <li class="collection-item">
+                    <label for="m_arkivar">
+                      <input type="hidden" name="h_arkivar" />
+                      {% if form.arkivar == True %}
+                      <input type="checkbox" name="m_arkivar" id="m_arkivar" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_arkivar" id="m_arkivar" />
+                      {% endif %}
+                      <span class="grey-text">vælg ansvarlig arkivar i feltet 'Arkivar'</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_enhed">
+                      <input type="hidden" name="h_enhed" />
+                      {% if form.enhed == True %}
+                      <input type="checkbox" name="m_enhed" id="m_enhed" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_enhed" id="m_enhed" />
+                      {% endif %}
+                      <span class="grey-text">på sagen i Public 360 opdatér ansvarlig enhed til "DB" og ansvarlig person til datamanager (hint Phillip)</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if av.version == 1 %}
+            <div class="row">
+              <div class="input-field col l4">
+                <div class="form-group">
+                  <label for="kategori" class=" col-form-label left grey-text darken-2-text">Kategori</label>
+                  <select name="kategori" id="kategori">
+                    {% if av.kategori == None %}
+                    <option value="None" selected></option>
+                    {% else%}
+                    <option value="None"></option>
+                    {% endif %}
+                    {% for kategori in kategorier %}
+                    {% if kategori == av.kategori %}
+                    <option value="{{ av.kategori }}" selected>{{ av.kategori }}</option>
+                    {% else %}
+                    <option value="{{ kategori }}">{{ kategori }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="input-field col l4">
+                <div class="form-group">
+                  <label for="klassifikation" class="col-form-label left grey-text darken-2-text">Klassifikation</label>
+                  <select name="klassifikation" id="klassifikation">
+                    {% for klassifikation in klassifikationer %}
+                    {% if klassifikation == av.klassifikation %}
+                    <option value="{{ av.klassifikation }}" selected>{{ av.klassifikation }}</option>
+                    {% else %}
+                    <option value="{{ klassifikation }}">{{ klassifikation }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="input-field col l4">
+                <div class="form-group">
+                  <label for="land" class="col-form-label left grey-text darken-2-text">Land</label>
+                  <select name="land" id="land">
+                    {% for land in lande %}
+                    {% if land == av.land %}
+                    <option value="{{ av.land }}" selected>{{ av.land }}</option>
+                    {% else %}
+                    <option value="{{ land }}">{{ land }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if av.version == 1 %}
+            <div class="row">
+              <div class="col l12 left-align">
+                <ul class="collection">
+                  <li class="collection-item">
+                    <label for="m_kategori">
+                      <input type="hidden" name="h_kategori" />
+                      {% if form.kategori == True %}
+                      <input type="checkbox" name="m_kategori" id="m_kategori" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_kategori" id="m_kategori" />
+                      {% endif %}
+                      <span class="grey-text">vælg kategori i feltet 'Kategori'</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_klassifikation">
+                      <input type="hidden" name="h_klassifikation" />
+                      {% if form.klassifikation == True %}
+                      <input type="checkbox" name="m_klassifikation" id="m_klassifikation" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_klassifikation" id="m_klassifikation" />
+                      {% endif %}
+                      <span class="grey-text">vælg klassifikation i feltet 'Klassifikation'</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="row">
+              {% if av.version == 1 %}
+              <div class="input-field col l8">
+                <div class="form-group">
+                  <label for="leverandor" class="col-form-label left grey-text darken-2-text">Leverandør</label>
+                  <select name="leverandor" id="leverandor">
+                    {% if av.leverandor == None %}
+                    <option value="None" selected></option>
+                    {% else%}
+                    <option value="None"></option>
+                    {% endif %}
+                    {% for leverandor in leverandorer %}
+                    {% if leverandor == av.leverandor %}
+                    <option value="{{ av.leverandor }}" selected>{{ av.leverandor }}</option>
+                    {% else %}
+                    <option value="{{ leverandor }}">{{ leverandor }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              {% endif %}
+
+              {% if av.version == 1 %}
+              <div class="input-field col l4">
+                {% else %}
+                <div class="input-field col l2">
+                  {% endif %}
+                  <div class="form-group">
+                    <label for="modtaget" class="col-form-label left grey-text darken-2-text">Modtaget</label>
+                    <input type="hidden" name="h_i_modtaget">
+                    <input type="text" class="datepicker" name="modtaget" id="modtaget">
+                    <input type="hidden" id="modtaget_dato" value="{{ av.modtaget|date:'m.d.Y' }}">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col l12 left-align">
+                  <ul class="collection">
+                    {% if av.version == 1 %}
+                    <li class="collection-item">
+                      <label for="m_leverandor">
+                        <input type="hidden" name="h_leverandor" />
+                        {% if form.leverandor == True %}
+                        <input type="checkbox" name="m_leverandor" id="m_leverandor" checked />
+                        {% else %}
+                        <input type="checkbox" name="m_leverandor" id="m_leverandor" />
+                        {% endif %}
+                        <span class="grey-text">vælg leverandør i feltet 'Leverandør'</span>
+                      </label>
+                    </li>
+                    {% endif %}
+                    <li class="collection-item">
+                      <label for="m_modtaget">
+                        <input type="hidden" name="h_modtaget" />
+                        {% if form.modtaget == True %}
+                        <input type="checkbox" name="m_modtaget" id="m_modtaget" checked />
+                        {% else %}
+                        <input type="checkbox" name="m_modtaget" id="m_modtaget" />
+                        {% endif %}
+                        <span class="grey-text">udfyld feltet 'Modtaget' med den dato der er stemplet på følgeseddel</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="card-action col l12">
+                  <div class="col right" style="padding-top: 20px;">
+                    <button class="btn waves-effect waves-light l4 grey darken-2 white-text" type="submit" id="gem" name="gem">Gem</button>
+                  </div>
+                  <div class="col left" style="padding-top: 20px;">
+                    <button class="btn waves-effect waves-light l4 grey" data-position="top" type="submit" id="next" name="next">Næste</button>
+                  </div>
+                </div>
+              </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

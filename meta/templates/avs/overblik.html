@@ -1,0 +1,386 @@
+{% extends 'base.html' %}
+
+{% block title %}META - Overblik{% endblock %}
+
+{% block content %}
+
+<section class="section center">
+
+  <div class="row" style="margin-bottom: -50px;">
+    <div class="col l12">
+      <div class="card">
+        <div class="card-content">
+          {% if total == 1 %}
+          <h5>{{ total }} arkiveringsversion med en samlet kendt størrelse på {{ total_size }} GB</h5>
+          {% else %}
+          <h5>{{ total }} arkiveringsversioner med en samlet kendt størrelse på {{ total_size }} GB</h5>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col l12">
+      <div class="card">
+        <div class="card-content">
+          <table class="striped">
+            <thead>
+              <tr class="grey-text text-darken-2">
+                <th></th>
+                <th>AVID</th>
+                <th></th>
+                <th>Titel</th>
+                <th>Svarfrist</th>
+                <th style="text-align: right;">Størrelse</th>
+                <th></th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            {% if modtaget_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Modtaget ({{ modtaget_count }})</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in modtaget %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if oprettet_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Oprettet ({{ oprettet_count }})</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in oprettet %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if kvitteret_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Kvitteret ({{ kvitteret_count }})</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in kvitteret %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if mangler_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Mangler kodeord ({{ mangler_count }})</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in mangler %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if tilgaengelig_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Tilgængelig ({{ tilgaengelig_count }})</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in tilgaengelig %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if journaliseret_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Journaliseret ({{ journaliseret_count }})</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in journaliseret %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if kopieret_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Kopieret ({{ kopieret_count }}) ({{ kopieret_size }} GB)</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in kopieret %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if ada_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Afvikler ADA ({{ ada_count }}) ({{ ada_size }} GB)</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in ada %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if klar_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Klar til test ({{ klar_count }}) ({{ klar_size }} GB)</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in klar %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if under_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Under test ({{ under_count }}) ({{ under_size }} GB)</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in under %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if godkendt_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Forhåndsgodkendt af tester ({{ godkendt_count }})</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in godkendt %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if dea_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Afvikler DEA ({{ dea_count }}) ({{ dea_size }} GB)</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in dea %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if afleveret_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Afleveret til DEA ({{ afleveret_count }}) ({{ afleveret_size }} GB)</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in afleveret %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if parat_count > 0 %}
+            <thead>
+              <tr>
+                <td colspan="8" style="text-align:center">
+                  <h5>Parat til godkendelse ({{ parat_count }})</h5>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in parat %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }} ({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td style="text-align: right;">{% if av.storrelse == '' %}N/A{% else %}{{ av.storrelse }} {% endif %}</td>
+                <td>{% if av.tester.profile.initialer != None  %}{{ av.tester.profile.initialer }}{% endif %}</td>
+                <td>{{ av.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endif %}
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+{% endblock content %}

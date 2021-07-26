@@ -1,0 +1,130 @@
+* {
+    
+}
+
+html {
+    overflow-y: scroll;
+    /* font-size: 18px; */
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+nav .brand-logo {
+    padding-left: 20px;
+}
+
+nav ul {
+    padding-right: 20px;
+}
+
+footer div {
+    padding-left: 10px;
+}
+
+.page-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index:9;
+}
+
+div#av_create {
+      width: 300px
+}
+
+div#av_search {
+      width: 300px
+}
+
+div#incoming_create {
+      width: 300px
+}
+
+.input-field label {
+    color: #fafafa;
+}
+
+#username, #password {
+    border-bottom: 1px solid #fafafa;
+    box-shadow: 0 0px 0 0 #fafafa;
+}
+
+#navn, #processor, #bundkort, #arbejdshukommelse, #titel, #jnr, #modtaget, #kodeord, #svarfirst, #svar, #storrelse, #leverandor, #producent, #kapacitet, #avid, #avid_incoming_create, #avid_search, #avid_create, #arkivar {
+    border-bottom: 1px solid #616161;
+    box-shadow: 0 0px 0 0 #616161;
+}
+
+#navn:focus, #processor:focus, #bundkort:focus, #arbejdshukommelse:focus, #titel:focus, #jnr:focus, #modtaget:focus, #kodeord:focus, #svarfrist:focus, #svar:focus, #storrelse:focus, #leverandor:focus, #producent:focus, #kapacitet:focus, #avid:focus, #avid_incoming_create:focus, #avid_search:focus, #avid_create:focus, #arkivar:focus, #modtaget_start:focus, #modtaget_slut:focus, #adgang_start:focus, #adgang_slut:focus, #svarfrist_start:focus, #svarfrist_slut:focus, #svar_start:focus, #svar_slut:focus, #version:focus {
+    border-bottom: 1px solid #616161;
+    box-shadow: 0 1px 0 0 #616161;
+}
+
+.dropdown-content li>span {
+    color: #616161
+}
+
+.select-wrapper input.select-dropdown:focus {
+    border-bottom: 1px solid #616161;
+    box-shadow: 0 1px 0 0 #616161;
+}
+
+[type="checkbox"]:checked+span:not(.lever):before {
+    top: -4px;
+    left: -5px;
+    width: 12px;
+    height: 22px;
+    border-top: 2px solid transparent;
+    border-left: 2px solid transparent;
+    border-right: 2px solid #616161;
+    border-bottom: 2px solid #616161;
+    -webkit-transform: rotate(40deg);
+    transform: rotate(40deg);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform-origin: 100% 100%;
+    transform-origin: 100% 100%;
+}
+
+.datepicker-date-display {
+    background-color: #616161;
+}
+
+.datepicker-table td.is-selected {
+    background-color: #616161;
+}
+
+.input-field label {
+    color: #616161;
+}
+
+a {
+    color: #616161;
+}
+
+.chips {
+    min-height: 65px;
+}
+
+.chips.focus {
+    border-bottom: 1px solid #616161;
+    box-shadow: 0 1px 0 0 #616161;
+}
+.chip {
+    margin-top: 23px;
+}
+
+.chip:focus {
+  background-color: #616161 !important;
+}
+
+td, th {
+    padding: 8px 5px;
+}

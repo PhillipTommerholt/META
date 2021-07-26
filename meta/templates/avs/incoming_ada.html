@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}META - Modtagelse - ADA{% endblock %}
+
+{% block content %}
+
+<section class="section center">
+  <div class="row">
+    <div class="col l8 offset-l2">
+      <div class="card">
+        <div class="card-content">
+          <form action="{% url 'incoming_procedure_save' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="previous_status" value="Kopiering">
+            <input type="hidden" name="next_status" value="Klar">
+            <input type="hidden" name="avid" value="{{ form.avid }}">
+            <input type="hidden" name="version" value="{{ form.version }}">
+
+            <div class="row">
+              <span class="card-title grey-text darken-2-text" style="font-weight: bold;">Modtagelse af AVID.{{ av.avid }} (v{{ av.version }})&nbsp;&nbsp;—&nbsp;&nbsp;{{ form.status }}</span>
+            </div>
+
+            <div class="input-field col l4">
+              <div class="form-group">
+                <input type="hidden" name="h_maskine">
+                <label for="maskine" class="col-form-label left grey-text text-darken-2">Maskine</label>
+                <select name="maskine" id="maskine">
+                  {% if av.maskine == None %}<option value="" selected></option>{% else%}<option value=""></option>{% endif %}
+                  {% for maskine in maskiner %}
+                  {% if maskine == av.maskine %}
+                  <option value="{{ maskine }}" selected>{{ maskine }}</option>
+                  {% else %}
+                  <option value="{{ maskine }}">{{ maskine }}{% if maskine.ibrug == 0 %}&nbsp;&nbsp;&#10003;{% else %}&nbsp;&nbsp;&#10007;{% endif %}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="input-field col l1" style="margin-top: 40px;">
+              <div class="form-group right" style="margin-right: 30px;">
+                <a onclick="this.closest('form').submit();return false;" style="cursor: pointer;"><i class="material-icons grey-text small">autorenew</i></a>
+              </div>
+            </div>
+            <div class="input-field col l1" style="margin-top: 40px;">
+              <div class="form-group right" style="margin-right: 30px;">
+                {% if av.maskine != None %}
+                <a style="cursor: pointer;"><i class="material-icons grey-text small">settings_remote</i></a>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col l12 left-align">
+                <ul class="collection">
+                  <li class="collection-item">
+                    <label for="m_test">
+                      <input type="hidden" name="h_test" />
+                      {% if form.test == True %}
+                      <input type="checkbox" name="m_test" id="m_test" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_test" id="m_test" />
+                      {% endif %}
+                      <span class="grey-text">find Sortnet-medie på hylden "Kopieret"</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_test">
+                      <input type="hidden" name="h_test" />
+                      {% if form.test == True %}
+                      <input type="checkbox" name="m_test" id="m_test" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_test" id="m_test" />
+                      {% endif %}
+                      <span class="grey-text">vælg en maskine i 'Maskine' og klik på opdatér ikonet</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_test">
+                      <input type="hidden" name="h_test" />
+                      {% if form.test == True %}
+                      <input type="checkbox" name="m_test" id="m_test" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_test" id="m_test" />
+                      {% endif %}
+                      <span class="grey-text">placér Sortnet-mediet i valgte maskine i "Maskinerummet"</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_test">
+                      <input type="hidden" name="h_test" />
+                      {% if form.test == True %}
+                      <input type="checkbox" name="m_test" id="m_test" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_test" id="m_test" />
+                      {% endif %}
+                      <span class="grey-text">klik på remote ikonet og log på maksinen</span>
+                    </label>
+                  </li>
+                  <li class="collection-item">
+                    <label for="m_test">
+                      <input type="hidden" name="h_test" />
+                      {% if form.test == True %}
+                      <input type="checkbox" name="m_test" id="m_test" checked />
+                      {% else %}
+                      <input type="checkbox" name="m_test" id="m_test" />
+                      {% endif %}
+                      <span class="grey-text">start ADA for den akutelle arkiveringsversion</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="card-action col l12">
+                <div class="col left" style="padding-top: 20px;">
+                  <button class="btn waves-effect waves-light l4 grey" type="submit" id="previous" name="previous">Forrige</button>
+                </div>
+                <div class="col left" style="padding-top: 20px;">
+                  <button class="btn waves-effect waves-light l4 grey" data-position="top" type="submit" id="next" name="next">Næste</button>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

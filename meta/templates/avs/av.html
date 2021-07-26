@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+
+{% block title %}AVID.{{ av.avid }} ({{ av.version }}) {% endblock %}
+
+{% block content %}
+
+<section class="section center">
+  <div class=" row">
+    <div class="col l12">
+      <div class="card">
+        <div class="card-content">
+          {% if aktiv %}
+          <form action="{% url 'av_save' %}" method="POST">
+            {% endif %}
+            {% csrf_token %}
+
+            <div class="row">
+              <div class="input-field col l1">
+                <div class="form-group">
+                  {% if publicknap %}
+                  <a href="{{ publicknap }}" target="_blank" class="btn waves-effect waves-light l4 grey darken-2 white-text" style="margin-top: 20px;">Public</a>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="input-field col l1">
+                <div class="form-group">
+                  <label for="avid" class="col-form-label left grey-text text-darken-2">AVID</label>
+                  <input type="text" name="avid" id="avid" class="form-control" value="{{ av.avid }}" readonly>
+                </div>
+              </div>
+              <div class="input-field col l1">
+                <div class="form-group">
+                  <label for="version" class="col-form-label left grey-text text-darken-2">Version</label>
+                  <input type="text" readonly name="version" id="version" class="form-control" value="{{ av.version }}">
+                </div>
+              </div>
+              <div class="input-field col l1">
+                <div class="form-group">
+                  <label for="jnr" class="col-form-label left grey-text text-darken-2">J.nr.</label>
+                  <input type="text" name="jnr" id="jnr" class="form-control" value="{{ av.jnr }}">
+                </div>
+              </div>
+              <div class="input-field col l6">
+                <div class="form-group">
+                  <label for="titel" class="col-form-label left grey-text text-darken-2">Titel</label>
+                  <input type="text" name="titel" id="titel" class="form-control" value="{{ av.titel }}">
+                </div>
+              </div>
+              <div class="input-field col l2">
+                <div class="form-group">
+                  <label for="public" class="col-form-label left grey-text text-darken-2">Public-link</label>
+                  <input type="text" name="public" id="public" class="form-control" value="{{ av.public }}">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col l3">
+                <div class="form-group">
+                  <label for="kategori" class=" col-form-label left grey-text text-darken-2">Kategori</label>
+                  <select name="kategori" id="kategori">
+                    {% if av.get_kategori_display == None %}
+                    <option value="" selected></option>
+                    {% else%}
+                    <option value=""></option>
+                    {% endif %}
+                    {% for kategori in kategorier %}
+                    {% if kategori == av.get_kategori_display %}
+                    <option value="{{ av.get_kategori_display }}" selected>{{ av.get_kategori_display }}</option>
+                    {% else %}
+                    <option value="{{ kategori }}">{{ kategori }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="input-field col l3">
+                <div class="form-group">
+                  <label for="klassifikation" class="col-form-label left grey-text text-darken-2">Klassifikation</label>
+                  <select name="klassifikation" id="klassifikation">
+                    {% for klassifikation in klassifikationer %}
+                    {% if klassifikation == av.get_klassifikation_display %}
+                    <option value="{{ klassifikation }}" selected>{{ klassifikation }}</option>
+                    {% else %}
+                    <option value="{{ klassifikation }}">{{ klassifikation }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="input-field col l3">
+                <div class="form-group">
+                  <label for="land" class="col-form-label left grey-text text-darken-2">Land</label>
+                  <select name="land" id="land">
+                    {% for land in lande %}
+                    {% if land == av.get_land_display %}
+                    <option value="{{ land }}" selected>{{ land }}</option>
+                    {% else %}
+                    <option value="{{ land }}">{{ land }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="input-field col l3">
+                <div class="form-group">
+                  <label for="arkivar" class="col-form-label left grey-text text-darken-2">Arkivar</label>
+                  <select name="arkivar" id="arkivar">
+                    {% if av.arkivar == None %}
+                    <option value="" selected></option>
+                    {% else%}
+                    <option value=""></option>
+                    {% endif %}
+                    {% for arkivar in arkivarer %}
+                    {% if arkivar == av.arkivar %}
+                    {{ leverandor }}
+                    <option value="{{ arkivar }}" selected>{{ arkivar }}</option>
+                    {% else %}
+                    <option value="{{ arkivar }}">{{ arkivar }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col l4">
+                <div class="form-group">
+                  <label for="leverandor" class="col-form-label left grey-text text-darken-2">Leverandør</label>
+                  <select name="leverandor" id="leverandor">
+                    {% if av.leverandor == None %}
+                    <option value="" selected></option>
+                    {% else%}
+                    <option value=""></option>
+                    {% endif %}
+                    {% for leverandor in leverandorer %}
+                    {% if leverandor == av.leverandor %}
+                    {{ leverandor }}
+                    <option value="{{ leverandor }}" selected>{{ leverandor }}</option>
+                    {% else %}
+                    <option value="{{ leverandor }}">{{ leverandor }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="input-field col l2">
+                <div class="form-group">
+                  <label for="modtaget" class="col-form-label left grey-text text-darken-2">Modtaget</label>
+                  <input type="text" class="datepicker" name="modtaget" id="modtaget">
+                  <input type="hidden" id="modtaget_dato" value="{{ av.modtaget|date:'m.d.Y' }}">
+                </div>
+              </div>
+              <div class="input-field col l2">
+                <div class="form-group">
+                  <label for="kodeord" class="col-form-label left grey-text text-darken-2">Adgang</label>
+                  <input type="text" class="datepicker" name="kodeord" id="kodeord">
+                  <input type="hidden" id="kodeord_dato" value="{{ av.kodeord|date:'m.d.Y' }}">
+                </div>
+              </div>
+              <div class="input-field col l2">
+                <div class="form-group">
+                  <label for="svarfrist" class="col-form-label left grey-text text-darken-2">Svarfrist</label>
+                  <input type="text" class="datepicker" name="svarfrist" id="svarfrist">
+                  <input type="hidden" id="svarfrist_dato" value="{{ av.svarfrist|date:'m.d.Y' }}">
+                </div>
+              </div>
+              <div class="input-field col l2">
+                <div class="form-group">
+                  <label for="svar" class="col-form-label left grey-text text-darken-2">Svar</label>
+                  <input type="text" class="datepicker" name="svar" id="svar">
+                  <input type="hidden" id="svar_dato" value="{{ av.svar|date:'m.d.Y' }}">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col l3">
+                <div class="form-group">
+                  <label for="tester" class="col-form-label left grey-text text-darken-2">Tester</label>
+                  <select name="tester" id="tester">
+                    {% if aktiv %}
+
+                    {% for tester in testere %}
+                    {% if tester.0 == av.tester %}
+                    <option value="{{ tester.0 }}" selected>{{ tester.1 }}</option>
+                    {% else %}
+                    <option value="{{ tester.0 }}">{{ tester.1 }}</option>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% else %}
+
+                    {% for tester in testere %}
+                    <option value="{{ tester.0 }}" selected>{{ tester.1 }}</option>
+                    {% endfor %}
+
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="input-field col l3">
+                <div class="form-group">
+                  <label for="status" class="col-form-label left grey-text text-darken-2">Status</label>
+                  <select name="status" id="status">
+                    {% if av.status == None %}
+                    <option value="" selected></option>
+                    {% else%}
+                    <option value=""></option>
+                    {% endif %}
+                    {% for status in statusser %}
+                    {% if status == av.get_status_display %}
+                    <option value="{{ status }}" selected>{{ status }}</option>
+                    {% else %}
+                    <option value="{{ status }}">{{ status }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="input-field col l2">
+                <div class="form-group">
+                  <label for="storrelse" class="col-form-label left grey-text text-darken-2">Størrelse i GB</label>
+                  <input type="text" name="storrelse" id="storrelse" class="form-control" value="{{ av.storrelse }}">
+                </div>
+              </div>
+              <div class="input-field col l2">
+                <div class="form-group">
+                  <br>
+                  {% if av.maskine != None %}
+                  <label for="bliv">
+                    {% if av.bliv == True %}
+                    <input type="checkbox" name="bliv" id="bliv" checked />
+                    {% else %}
+                    <input type="checkbox" name="bliv" id="bliv" />
+                    {% endif%}
+                    <span class="grey-text text-darken-2">Bliv på maskine</span>
+                  </label>
+                  {% endif %}
+                </div>
+              </div>
+              {% if user.profile.modtagelse == True and av.status == 'Klar til test' %}
+              <div class="input-field col l2">
+                <div class="form-group">
+                  <br>
+                  <label for="prioritering">
+                    {% if av.prioritering != 0 %}
+                    <input type="checkbox" name="prioritering" id="prioritering" checked>
+                    {% else %}
+                    <input type="checkbox" name="prioritering" id="prioritering">
+                    {% endif%}
+                    <span class="grey-text text-darken-2">Prioritering</span>
+                  </label>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="row">
+              <div class="input-field col l4">
+                <div class="form-group">
+                  <label for="av_medier" class="col-form-label left grey-text text-darken-2">AV Medie(r)</label>
+                  <input type="hidden" id="av_medier" name="av_medier" value="{{ ibrugtaget_medier }}">
+                  <div class="chips chips-initial av_medier"></div>
+                </div>
+              </div>
+              <div class="input-field col l4">
+                <div class="form-group">
+                  <label for="maskine" class="col-form-label left grey-text text-darken-2">Maskine</label>
+                  <input type="hidden" id="maskine" name="maskine" value="{{ maskiner }}">
+                  <div class="chips chips-initial maskine"></div>
+                </div>
+              </div>
+              <div class="input-field col l4">
+                <div class="form-group">
+                  <label for="dea_medier" class="col-form-label left grey-text text-darken-2">DEA Medie(r)</label>
+                  <input type="hidden" id="dea_medier" name="dea_medier" value="{{ dea_medier }}">
+                  <div class="chips chips-initial dea_medier"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="card-action col l12">
+                {% if aktiv %}
+                <div class="col right" style="padding-top: 20px;">
+                  <button class="btn waves-effect waves-light l4 grey darken-2 white-text" type="submit" id="gem" name="action">Gem ændringer</button>
+                </div>
+                {% endif %}
+                {% for andre in andre_vers %}
+                <div class="col left" style="padding-top: 20px;">
+                  {% if andre == av.version %}
+                  <button class="btn waves-effect waves-light l4 grey" type="submit" name="{{ andre }}" disabled>{{ andre }}</button>
+                  {% else %}
+                  <button class="btn waves-effect waves-light l4 grey" type="submit" name="{{ andre }}">{{ andre }}</button>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            {% if aktiv %}
+          </form>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+
+{% endblock content %}

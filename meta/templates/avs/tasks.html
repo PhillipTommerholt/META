@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}META - Mine Opgaver{% endblock %}
+
+{% block content %}
+
+<section class="section center">
+  <div class="row">
+    <div class="col l12">
+      <div class="card">
+        <div class="card-content">
+          <table class="striped" style="margin-top: -14px;">
+            <thead>
+              <tr class="grey-text text-darken-2">
+                <th></th>
+                <th>AVID</th>
+                <th></th>
+                <th></th>
+                <th>Titel</th>
+                <th>Svarfrist</th>
+                <th>Status</th>
+                <th>Maskine</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for av in avs %}
+              <tr>
+                <td><a href="{% url 'av_view' av.avid av.version %}"><i class="material-icons grey-text text-darken-2">edit</i></a></td>
+                <td>{{ av.avid }}</td>
+                <td>({{ av.version }})</td>
+                <td>{% if av.kategori == 'Stat' %}<i class="material-icons grey-text text-darken-2">account_balance</i>{% elif av.kategori == 'Kommune' %}<i class="material-icons grey-text text-darken-2">apartment</i>{% elif av.kategori == 'Privat' %}<i class="material-icons grey-text text-darken-2">person</i>{% elif av.kategori == 'Klassificeret' %}<i class="material-icons grey-text text-darken-2">security</i>{% endif%}</td>
+                <td>{{ av.titel }}</td>
+                <td>{{ av.svarfrist|date:'d.m.Y' }}</td>
+                <td>{{ av.status }}</td>
+                <td>{% if av.maskine != None %}{{ av.maskine }}{% endif %}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
